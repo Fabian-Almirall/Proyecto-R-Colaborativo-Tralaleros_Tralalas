@@ -1,1 +1,37 @@
 
+# Primero se crea un data frame para guardar los resultados
+
+resultado = data.frame(
+  columna = character(),
+  cantidad = numeric(),
+  stringsAsFactors = F
+)
+
+# Se itera sobre las columnas
+
+conteo = function(data){ # se crea la función conteo
+  for(col in names(df)){
+    media_col = mean(df[[col]], na.rm = TRUE)
+    cantidad_mayores = sum(df[[col]] > media_col, na.rm = FALSE)
+    
+    if(cantidad_mayores > 10) { # Si las cantidades son mayores a 10
+      resultado = rbind(resultado, data.frame(
+        columna = col,
+        cantidad = cantidad_mayores,
+        stringsAsFactors = FALSE
+      ))
+    }
+    
+  }
+  
+  # Se crea la carpeta de resultados
+  if (!dir.exists("resultados")) {
+    dir.create("resultados")
+  }
+  
+  # Se guarda el archivo
+  write.csv(resultado, file = "resultados/columnas_mayores_media.csv", row.names = FALSE)
+  
+  cat("Archivo guardado en: resultados/columnas_mayores_media.csv\n")  
+}
+
